@@ -20,9 +20,9 @@ class Gantt extends CI_Controller {
             $query = $this->db->query($query);
             $countString = $query->result();
             $countResult = (int)($countString[0]->total);
-            var_dump($countResult);
+            $pageNum = 10;
             
-            $query = 'SELECT * FROM wp_scrum_task limit 10,10'; 
+            $query = 'SELECT * FROM wp_scrum_task limit ' . pageNum . ',10';
             $query = $this->db->query($query);
             foreach ($query->result() as $row)
             {
