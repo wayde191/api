@@ -28,7 +28,7 @@ class Gantt extends CI_Controller {
             $query = $this->db->query($query);
             foreach ($query->result() as $row)
             {
-              $award = array('taskdisplayname' => $row->id . ' : ' $row->name, 'id' => $row->id, 'name' => $row->name, 'beginDate' => $row->begin_date, 'endDate' => $row->end_date, 'principal' => $row->principal, 'schedule' => $row->schedule);
+              $award = array('taskdisplayname' => $row->id . ' : ' . $row->name, 'id' => $row->id, 'name' => $row->name, 'beginDate' => $row->begin_date, 'endDate' => $row->end_date, 'principal' => $row->principal, 'schedule' => $row->schedule);
               array_push($awardsArr, $award);
             }
 
