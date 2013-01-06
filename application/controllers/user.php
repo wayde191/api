@@ -23,7 +23,6 @@ class User extends CI_Controller {
 
 	public function login(){
         
-        $this->setSession();
         echo json_encode(array("status" => 1, "name" => "wayde", "id" => 1, "sex" => "boy"));
         return;
         
