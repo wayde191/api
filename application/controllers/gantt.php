@@ -9,7 +9,7 @@ class Gantt extends CI_Controller {
 		;
 	}
     
-  public function getAll() {
+  public function getTasks() {
     session_start();
     $awardsArr = array();
         
