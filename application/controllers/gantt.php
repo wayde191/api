@@ -10,21 +10,26 @@ class Gantt extends CI_Controller {
 	}
     
   public function getTasks() {
+    
+    global $IH_SESSION_LOGGEDIN;
+    
     session_start();
     $awardsArr = array();
-    $pageNum = 10;
+    $rowsPerPage = $_POST['rowsPerPage'];
+    $pageIndex = $_POST['pageIndex'];
+    $recordStartIndex = $rowsPerPage * ($pageIndex - 1)
         
-        if (1) {
+        if (1 || $_SESSION[$IH_SESSION_LOGGEDIN]) {
             $this->load->database();
             
             $query = 'SELECT count(id) as total from wp_scrum_task where project_id=1';
             $query = $this->db->query($query);
             $countString = $query->result();
             $countResult = (int)($countString[0]->total);
-            $totalPage = $countResult / $pageNum + ($countResult % $pageNum > 1 ? 1 : 0);
+            $totalPage = ceil($countResult / $rowsPerPage);
             
             // 11 ~ 20
-            $query = 'SELECT * FROM wp_scrum_task limit ' . $pageNum . ',10';
+            $query = 'SELECT * FROM wp_scrum_task limit ' . $recordStartIndex . ',' . $rowsPerPage . ';';
             $query = $this->db->query($query);
             foreach ($query->result() as $row)
             {
@@ -33,6 +38,8 @@ class Gantt extends CI_Controller {
             }
 
             echo json_encode(array("status" => 1, "totalPage" => $totalPage, "data" => $awardsArr));
+        } else {
+            echo json_encode(array("status" => 0, "errorCode" => -1));
         }
     }
 }
