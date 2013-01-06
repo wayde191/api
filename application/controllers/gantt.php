@@ -12,14 +12,13 @@ class Gantt extends CI_Controller {
   public function getTasks() {
     
     global $IH_SESSION_LOGGEDIN;
-    
     session_start();
     $awardsArr = array();
     $rowsPerPage = $_POST['rowsPerPage'];
     $pageIndex = $_POST['pageIndex'];
-    $recordStartIndex = $rowsPerPage * ($pageIndex - 1)
+    $recordStartIndex = $rowsPerPage * ($pageIndex - 1);
         
-        if (1) {
+        if (1 || $_SESSION[$IH_SESSION_LOGGEDIN]) {
             $this->load->database();
             
             $query = 'SELECT count(id) as total from wp_scrum_task where project_id=1';
