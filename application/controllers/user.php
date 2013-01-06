@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 global $WP_ROOTPATH;
-require( $WP_ROOTPATH . 'wp-load.php' );
+//require( $WP_ROOTPATH . 'wp-load.php' );
 
 class User extends CI_Controller {
 
