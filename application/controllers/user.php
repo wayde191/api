@@ -21,14 +21,18 @@ class User extends CI_Controller {
     $_SESSION[$IH_SESSION_LOGGEDIN] = TRUE;
   }
 
-	public function login()
-	{
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+	public function login(){
+        
+        $this->setSession();
+        echo json_encode(array("status" => 1, "name" => "wayde", "id" => 1, "sex" => "boy"));
+        return;
+        
+        $username = $_POST['username'];
+        $password = $_POST['password'];
 
 		// $_POST['log'] = $username;
 		// $_POST['pwd'] = $password;
-    $credentials = array("user_login" => $username,"user_password" => $password,);
+        $credentials = array("user_login" => $username,"user_password" => $password,);
 		
 		$user = wp_signon($credentials, '');
         if($user->ID == 0) {
