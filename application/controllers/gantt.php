@@ -12,6 +12,7 @@ class Gantt extends CI_Controller {
   public function getTasks() {
     session_start();
     $awardsArr = array();
+    $pageNum = 10;
         
         if (1) {
             $this->load->database();
@@ -20,18 +21,18 @@ class Gantt extends CI_Controller {
             $query = $this->db->query($query);
             $countString = $query->result();
             $countResult = (int)($countString[0]->total);
-            $pageNum = 10;
+            $totalPage = $countResult / $pageNum + ($countResult % $pageNum > 1 ? 1 : 0);
             
             // 11 ~ 20
             $query = 'SELECT * FROM wp_scrum_task limit ' . $pageNum . ',10';
             $query = $this->db->query($query);
             foreach ($query->result() as $row)
             {
-              $award = array('id' => $row->id, 'text' => $row->name . ' : ' .$row->begin_date);
+              $award = array('taskdisplayname' => $row->id . ' : ' $row->name, 'id' => $row->id, 'name' => $row->name, 'beginDate' => $row->begin_date, 'endDate' => $row->end_date, 'principal' => $row->principal, 'schedule' => $row->schedule);
               array_push($awardsArr, $award);
             }
 
-            echo json_encode(array("status" => 1, "data" => $awardsArr));
+            echo json_encode(array("status" => 1, "totalPage" => $totalPage, "data" => $awardsArr));
         }
     }
 }
