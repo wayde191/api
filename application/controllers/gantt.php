@@ -19,7 +19,7 @@ class Gantt extends CI_Controller {
     $pageIndex = $_POST['pageIndex'];
     $recordStartIndex = $rowsPerPage * ($pageIndex - 1)
         
-        if (1 || $_SESSION[$IH_SESSION_LOGGEDIN]) {
+        if (1) {
             $this->load->database();
             
             $query = 'SELECT count(id) as total from wp_scrum_task where project_id=1';
