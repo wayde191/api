@@ -6,14 +6,17 @@ class Gantt extends CI_Controller {
 
 	public function index()
 	{
-		;
+		$tmphour = date("g")+8;
+                $tmpnow = date("Y-n-j ").$tmphour.date(":i:s");
+        echo $tmpnow;
 	}
     
   public function getTasks() {
     
     global $IH_SESSION_LOGGEDIN;
     session_start();
-    $awardsArr = array();
+    
+    $tasksArr = array();
     $rowsPerPage = $_POST['rowsPerPage'];
     $pageIndex = $_POST['pageIndex'];
     $recordStartIndex = $rowsPerPage * ($pageIndex - 1);
@@ -32,11 +35,120 @@ class Gantt extends CI_Controller {
             $query = $this->db->query($query);
             foreach ($query->result() as $row)
             {
-              $award = array('class' => 'suggestted', 'text' => $row->id . ' : ' . $row->name, 'id' => $row->id, 'name' => $row->name, 'beginDate' => $row->begin_date, 'endDate' => $row->end_date, 'principal' => $row->principal, 'schedule' => $row->schedule);
-              array_push($awardsArr, $award);
+              $award = array('arrayIndex'=>count($tasksArr), 'class' => 'suggestted', 'text' => $row->id . ' : ' . $row->name, 'id' => $row->id, 'name' => $row->name, 'beginDate' => $row->begin_date, 'endDate' => $row->end_date, 'principal' => $row->principal, 'schedule' => $row->schedule);
+              array_push($tasksArr, $award);
             }
 
-            echo json_encode(array("status" => 1, "totalPage" => $totalPage, "data" => $awardsArr));
+            echo json_encode(array("status" => 1, "totalPage" => $totalPage, "data" => $tasksArr));
+        } else {
+            echo json_encode(array("status" => 0, "errorCode" => -1));
+        }
+    }
+    
+    public function update() {
+        global $IH_SESSION_LOGGEDIN;
+        session_start();
+
+        $id = $_POST['id'];
+        $name = $_POST['name'];
+        $beginDate = $_POST['beginDate'];
+        $endDate = $_POST['endDate'];
+        $principal = $_POST['principal'];
+        $schedule = $_POST['schedule'];
+        
+//        $id = 1;
+//        $name = "hahaha";
+//        $beginDate = "2012-12-12";
+//        $endDate = "2012-11-12";
+//        $principal = "waydesun";
+//        $schedule = "100%";
+        
+        if (1 || $_SESSION[$IH_SESSION_LOGGEDIN]) {
+            $this->load->database();
+            
+            $sql;
+            if($schedule != "100%"){
+                $sql = "UPDATE  `wp_scrum_task` SET  `name` ='" . $name . "', `begin_date` = '". $beginDate . "', `end_date` = '". $endDate . "', `principal` = '". $principal . "', `schedule` = '". $schedule ."' WHERE  `ID` =" . $id;
+            } else {
+                date_default_timezone_set('Asia/Chongqing');
+                $sql = "UPDATE  `wp_scrum_task` SET  `name` ='" . $name . "', `begin_date` = '". $beginDate . "', `end_date` = '". $endDate . "', `principal` = '". $principal . "', `schedule` = '". $schedule . "', `done_date` = '". date("Y-m-d") . "' WHERE  `ID` =" . $id;
+            }
+            $this->db->query($sql);
+              
+            if (1 == $this->db->affected_rows()) {
+                echo json_encode(array("status" => 1));
+            } else {
+                echo json_encode(array("status" => 0));
+            }
+
+        } else {
+            echo json_encode(array("status" => 0, "errorCode" => -1));
+        }
+    }
+    
+    public function delete() {
+        global $IH_SESSION_LOGGEDIN;
+        session_start();
+
+        $id = $_POST['id'];
+        
+        if (1 || $_SESSION[$IH_SESSION_LOGGEDIN]) {
+            $this->load->database();
+            
+            $sql = "DELETE FROM `ihakula`.`wp_scrum_task` WHERE `wp_scrum_task`.`id` =" . $id;
+            $this->db->query($sql);
+              
+            if (1 == $this->db->affected_rows()) {
+                echo json_encode(array("status" => 1));
+            } else {
+                echo json_encode(array("status" => 0));
+            }
+
+        } else {
+            echo json_encode(array("status" => 0, "errorCode" => -1));
+        }
+    }
+    
+    public function insert() {
+        global $IH_SESSION_LOGGEDIN;
+        session_start();
+
+        $name = $_POST['name'];
+        $beginDate = $_POST['beginDate'];
+        $endDate = $_POST['endDate'];
+        $principal = $_POST['principal'];
+        $schedule = $_POST['schedule'];
+        
+//        $name = "waydesuntest";
+//        $beginDate = "2012-12-12";
+//        $endDate = "2012-11-12";
+//        $principal = "waydesun";
+//        $schedule = "10%";
+        
+        if (1 || $_SESSION[$IH_SESSION_LOGGEDIN]) {
+            $this->load->database();
+            
+            $sql = "INSERT INTO  `wp_scrum_task` (
+                      `name` ,
+                      `type` ,
+                      `begin_date` ,
+                      `end_date` ,
+                      `project_id` ,
+                      `principal`,
+                      `schedule`
+                      )
+                      VALUES (
+                      '$name',  '1',  '$beginDate',  '$endDate',  '1',  '$principal', '$schedule'
+                      )";
+                      
+            $this->db->query($sql);
+            
+            if (1 == $this->db->affected_rows()) {
+              echo json_encode(array("status" => 1));
+            } else {
+              echo json_encode(array("status" => 0));
+            }
+
         } else {
             echo json_encode(array("status" => 0, "errorCode" => -1));
         }

@@ -7,8 +7,8 @@ class Suggestions extends CI_Controller {
 
 	public function index()
 	{
-		;
-	}
+        ;
+    }
   
   public function getHoneyId () {
     global $IH_SESSION_LOGGEDIN;
@@ -167,8 +167,10 @@ class Suggestions extends CI_Controller {
     $content = $_POST['text'];
     $suggestionType = $_POST['suggestionType'];
     $honeyId = $this->getHoneyId();
+    
+    date_default_timezone_set('Asia/Chongqing');
     $date = '"'. date('Y-m-d H:i:s') . '"';
-        
+      
         session_start();
         
         if ($_SESSION[$IH_SESSION_LOGGEDIN] && $honeyId) {
@@ -214,6 +216,8 @@ class Suggestions extends CI_Controller {
             $query = $this->db->query($query);
             
             if (1 == count( $query->result())) {
+                date_default_timezone_set('Asia/Chongqing');
+        
               $sql = "UPDATE  `wp_suggestions` SET  `fixed` =  'improving', `fixedDate` = '". date("Y-m-d H:i:s") ."' WHERE  `ID` =" . $suggestionId;
               $this->db->query($sql);
               
@@ -247,6 +251,7 @@ class Suggestions extends CI_Controller {
             $query = $this->db->query($query);
             
             if (1 == count( $query->result())) {
+            date_default_timezone_set('Asia/Chongqing');
               $sql = "UPDATE  `wp_suggestions` SET  `fixed` =  'improved', `fixedDate` = '". date("Y-m-d H:i:s") ."' WHERE  `ID` =" . $suggestionId;
               $this->db->query($sql);
               
