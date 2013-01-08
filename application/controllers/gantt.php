@@ -45,6 +45,30 @@ class Gantt extends CI_Controller {
         }
     }
     
+  public function getAllTasks() {
+    
+    global $IH_SESSION_LOGGEDIN;
+    session_start();
+    
+    $tasksArr = array();
+        
+        if (1 || $_SESSION[$IH_SESSION_LOGGEDIN]) {
+            $this->load->database();
+            
+            $query = 'SELECT * FROM wp_scrum_task WHERE project_id=1; ';
+            $query = $this->db->query($query);
+            foreach ($query->result() as $row)
+            {
+              $award = array('arrayIndex'=>count($tasksArr), 'class' => 'suggestted', 'text' => count($tasksArr) + 1 . ' : ' . $row->name, 'id' => $row->id, 'name' => $row->name, 'beginDate' => $row->begin_date, 'endDate' => $row->end_date, 'principal' => $row->principal, 'schedule' => $row->schedule);
+              array_push($tasksArr, $award);
+            }
+
+            echo json_encode(array("status" => 1, "data" => $tasksArr));
+        } else {
+            echo json_encode(array("status" => 0, "errorCode" => -1));
+        }
+  }
+    
     public function update() {
         global $IH_SESSION_LOGGEDIN;
         session_start();
