@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 global $WP_ROOTPATH;
-//require( $WP_ROOTPATH . 'wp-load.php' );
+require( $WP_ROOTPATH . 'wp-load.php' );
 
 class User extends CI_Controller {
 
@@ -23,8 +23,8 @@ class User extends CI_Controller {
 
 	public function login(){
         
-        echo json_encode(array("status" => 1, "name" => "wayde", "id" => 1, "sex" => "boy"));
-        return;
+//        echo json_encode(array("status" => 1, "name" => "wayde", "id" => 1, "sex" => "boy"));
+//        return;
         
         $username = $_POST['username'];
         $password = $_POST['password'];

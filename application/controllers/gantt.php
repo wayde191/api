@@ -1,14 +1,15 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 global $WP_ROOTPATH;
+require( $WP_ROOTPATH . 'wp-load.php' );
 
 class Gantt extends CI_Controller {
 
 	public function index()
 	{
-		$tmphour = date("g")+8;
-                $tmpnow = date("Y-n-j ").$tmphour.date(":i:s");
-        echo $tmpnow;
+//		$tmphour = date("g")+8;
+//                $tmpnow = date("Y-n-j ").$tmphour.date(":i:s");
+//        echo $tmpnow;
 	}
     
   public function getTasks() {
@@ -21,7 +22,7 @@ class Gantt extends CI_Controller {
     $pageIndex = $_POST['pageIndex'];
     $recordStartIndex = $rowsPerPage * ($pageIndex - 1);
         
-        if (1 || $_SESSION[$IH_SESSION_LOGGEDIN]) {
+        if ($_SESSION[$IH_SESSION_LOGGEDIN]) {
             $this->load->database();
             
             $query = 'SELECT count(id) as total from wp_scrum_task where project_id=1';
@@ -52,7 +53,7 @@ class Gantt extends CI_Controller {
     
     $tasksArr = array();
         
-        if (1 || $_SESSION[$IH_SESSION_LOGGEDIN]) {
+        if ($_SESSION[$IH_SESSION_LOGGEDIN]) {
             $this->load->database();
             
             $query = 'SELECT * FROM wp_scrum_task WHERE project_id=1; ';
@@ -87,7 +88,7 @@ class Gantt extends CI_Controller {
 //        $principal = "waydesun";
 //        $schedule = "100%";
         
-        if (1 || $_SESSION[$IH_SESSION_LOGGEDIN]) {
+        if ($_SESSION[$IH_SESSION_LOGGEDIN]) {
             $this->load->database();
             
             $sql;
@@ -116,7 +117,7 @@ class Gantt extends CI_Controller {
 
         $id = $_POST['id'];
         
-        if (1 || $_SESSION[$IH_SESSION_LOGGEDIN]) {
+        if ($_SESSION[$IH_SESSION_LOGGEDIN]) {
             $this->load->database();
             
             $sql = "DELETE FROM `ihakula`.`wp_scrum_task` WHERE `wp_scrum_task`.`id` =" . $id;
