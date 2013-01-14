@@ -21,18 +21,19 @@ class Gantt extends CI_Controller {
     $rowsPerPage = $_POST['rowsPerPage'];
     $pageIndex = $_POST['pageIndex'];
     $recordStartIndex = $rowsPerPage * ($pageIndex - 1);
+    $projectID = $_POST['projectID'];
         
         if ($_SESSION[$IH_SESSION_LOGGEDIN]) {
             $this->load->database();
             
-            $query = 'SELECT count(id) as total from wp_scrum_task where project_id=1';
+            $query = 'SELECT count(id) as total from wp_scrum_task where project_id=' . $projectID;
             $query = $this->db->query($query);
             $countString = $query->result();
             $countResult = (int)($countString[0]->total);
             $totalPage = ceil($countResult / $rowsPerPage);
             
             // 11 ~ 20
-            $query = 'SELECT * FROM wp_scrum_task limit ' . $recordStartIndex . ',' . $rowsPerPage . ';';
+            $query = 'SELECT * FROM wp_scrum_task where project_id='. $projectID .' limit ' . $recordStartIndex . ',' . $rowsPerPage . ';';
             $query = $this->db->query($query);
             foreach ($query->result() as $row)
             {
@@ -51,12 +52,13 @@ class Gantt extends CI_Controller {
     global $IH_SESSION_LOGGEDIN;
     session_start();
     
+    $projectID = $_POST['projectID'];
     $tasksArr = array();
         
         if ($_SESSION[$IH_SESSION_LOGGEDIN]) {
             $this->load->database();
             
-            $query = 'SELECT * FROM wp_scrum_task WHERE project_id=1; ';
+            $query = 'SELECT * FROM wp_scrum_task WHERE project_id='. $projectID .';';
             $query = $this->db->query($query);
             foreach ($query->result() as $row)
             {
@@ -143,6 +145,7 @@ class Gantt extends CI_Controller {
         $endDate = $_POST['endDate'];
         $principal = $_POST['principal'];
         $schedule = $_POST['schedule'];
+        $projectID = $_POST['projectID'];
         
 //        $name = "waydesuntest";
 //        $beginDate = "2012-12-12";
@@ -163,7 +166,7 @@ class Gantt extends CI_Controller {
                       `schedule`
                       )
                       VALUES (
-                      '$name',  '1',  '$beginDate',  '$endDate',  '1',  '$principal', '$schedule'
+                      '$name',  '1',  '$beginDate',  '$endDate',  '$projectID',  '$principal', '$schedule'
                       )";
                       
             $this->db->query($sql);
