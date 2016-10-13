@@ -8,7 +8,7 @@
         {
             parent::__construct();
             $this->token = 'ihakulaweixin';
-            $this->rootUrl = 'http://localhost:8090/weixin/event/center';
+            $this->rootUrl = 'https://localhost:9000/weixin/event/center';
         }
         
         public function index()
