@@ -5,12 +5,12 @@
         {
             parent::__construct();
             $this->token = 'ihakulaweixin';
-            $this->rootUrl = 'http://www.ihakula.com:9000/no1/index.php?ihakulaweixin';
+            $this->rootUrl = 'http://localhost:9395/weixin/event/center';
         }
 
         public function index()
         {
-	        date_default_timezone_set('Asia/Chongqing');
+	    date_default_timezone_set('Asia/Chongqing');
             if (isset($_GET['echostr'])) {
                 $this->valid();
             }else{
@@ -23,10 +23,10 @@
             $keywork = "ihakula_northern_hemisphere";
 
             $data = array('ihakula_request' => $keywork, 'request_xml' => $reqeustXml);
-            $res = $this->send_request($this->rootUrl, $data, 'POST');
+            $res = json_decode($this->send_request($this->rootUrl, $data, 'POST'));
 
-            $this->logger('Request: ' . $reqeustXml);
-            $this->logger('Response: ' . $res);
+            $this->logger('request' . $data);
+            $this->logger('response' . $res);
 
             echo $res;
         }
@@ -55,9 +55,9 @@
             $timestamp = $_GET["timestamp"];
             $nonce = $_GET["nonce"];
 
-	        $this->logger($signature);
-	        $this->logger($timestamp);
-	        $this->logger($nonce);
+            $this->logger($signature);
+            $this->logger($timestamp);
+            $this->logger($nonce);
 
             $token = $this->token;
             $tmpArr = array($token, $timestamp, $nonce);
@@ -65,13 +65,13 @@
             $tmpStr = implode( $tmpArr );
             $tmpStr = sha1( $tmpStr );
 
-	        $this->logger($tmpStr);
+	    $this->logger($tmpStr);
 
             if( $tmpStr == $signature ){
-		        $this->logger('yes');
-	   	        return true;
+		$this->logger('yes');
+	   	return true;
             }else{
-		        $this->logger('no');
+		$this->logger('no');
                 return false;
             }
         }
