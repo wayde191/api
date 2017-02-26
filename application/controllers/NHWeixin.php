@@ -34,7 +34,7 @@
         private function logger($log_content)
         {
             $max_size = 10000;
-            $log_filename = "/var/www/php/log.xml";
+            $log_filename = "/var/www/html/logs/php/log.xml";
             file_put_contents($log_filename, date('Y-m-d H:i:s')." ".$log_content."\r\n", FILE_APPEND);
         }
 
